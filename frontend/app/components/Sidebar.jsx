@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function SidebarHeader() {
   return (
     <div className="sidebar-header">
@@ -26,33 +28,83 @@ function SidebarFooter() {
   );
 }
 
-function ChatThreadItem(props) {
+function ChatThreadItem({
+  id,
+  href = "#",
+  title = "Untitled chat",
+  onDeleteThread = () => {},
+}) {
+  function handleDeleteClick(event) {
+    event.stopPropagation();
+
+    console.log("Delete thread clicked:", {
+      id,
+      title,
+      timestamp: new Date().toISOString(),
+    });
+
+    onDeleteThread(id);
+  }
+
   return (
     <li className="chat-thread-item">
-      <a href={props.href} className="chat-thread-link">
-        {props.title}
-      </a>
+      <div className="chat-thread-item-content">
+        <a href={href} className="chat-thread-link" aria-label={`Open chat: ${title}`}>
+          {title}
+        </a>
+        <button
+          type="button"
+          className="chat-thread-delete"
+          aria-label={`Delete chat: ${title}`}
+          onClick={handleDeleteClick}
+        >
+          ×
+        </button>
+      </div>
     </li>
   );
 }
 
-function ChatThreadsList(props) {
+function ChatThreadsList({ threads = [], onDeleteThread = () => {} }) {
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredThreads = threads.filter((thread = {}) => {
+    const title = String(thread.title ?? "").toLowerCase();
+    const query = searchValue.trim().toLowerCase();
+
+    return title.includes(query);
+  });
+
   return (
     <nav className="chat-threads-list" aria-label="Chat threads">
+      <input
+        type="text"
+        className="chat-thread-search"
+        placeholder="Search chats..."
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.target.value)}
+        aria-label="Search chat threads"
+      />
       <ul>
-        {props.threads.map((thread) => (
-          <ChatThreadItem key={thread.id} href={thread.href} title={thread.title} />
+        {filteredThreads.map((thread = {}) => (
+          <ChatThreadItem
+            key={thread.id ?? `thread-${thread.href ?? "unknown"}`}
+            id={thread.id}
+            href={thread.href ?? "#"}
+            title={thread.title ?? "Untitled chat"}
+            onDeleteThread={onDeleteThread}
+          />
         ))}
       </ul>
     </nav>
   );
 }
 
-export default function Sidebar(props) {
+export default function Sidebar({ threads = [], onDeleteThread = () => {} }) {
   return (
     <aside className="sidebar">
       <SidebarHeader />
-      <ChatThreadsList threads={props.threads} />
+      <ChatThreadsList threads={threads} onDeleteThread={onDeleteThread} />
       <SidebarFooter />
     </aside>
   );

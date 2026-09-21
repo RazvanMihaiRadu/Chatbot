@@ -100,9 +100,18 @@ body {
 .chat-thread-item {
   margin-bottom: 0.25rem;
 }
+
+.chat-thread-item-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
 .chat-thread-link {
   display: block;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   border-radius: 6px;
@@ -117,8 +126,40 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .chat-thread-link:hover {
   background: var(--bg-hover);
+}
+
+.chat-thread-delete {
+  border: 1px solid transparent;
+  background: transparent;
+  color: #9ca3af;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  font-size: 1.125rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.chat-thread-item:hover .chat-thread-delete,
+.chat-thread-item:focus-within .chat-thread-delete {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chat-thread-delete:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.2);
+  color: #dc2626;
 }
 
 /* Sidebar footer */
