@@ -76,6 +76,11 @@ export default function Home() {
         type: "user",
         content: trimmedText,
       },
+      {
+        id: Date.now() + 1,
+        type: "bot",
+        content: "Thanks for your message! How can I assist you today?",
+      }
     ]);
   }
 
