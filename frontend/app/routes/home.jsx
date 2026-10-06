@@ -10,7 +10,7 @@ import { ChatMessages, ChatInput } from "../components/Chat.jsx";
  * 3. LIFTING STATE UP: Managing state in parent component
  * 4. CALLBACK PROPS: Passing state update functions to child components
  */
-export const defaultMessages = [
+const initialMessages = [
   {
     id: 1,
     type: "user",
@@ -80,7 +80,7 @@ export const defaultMessages = [
  */
 export default function Home() {
   // STATE: Convert static data to dynamic state
-  const [messages, setMessages] = React.useState(defaultMessages);
+  const [messages, setMessages] = React.useState(initialMessages);
 
   // CALLBACK FUNCTION: Add new message to state array
   const addMessage = (content) => {

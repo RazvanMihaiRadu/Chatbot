@@ -1,5 +1,5 @@
 import React from "react";
-import { href, Link } from "react-router";
+import { href, Link, NavLink } from "react-router";
 
 /**
  * Sidebar Components
@@ -10,13 +10,19 @@ import { href, Link } from "react-router";
  * 3. Component composition and hierarchy
  * 4. File organization for better project structure
  * 5. CONTROLLED COMPONENTS: Components that manage form input state
+ * 6. CLIENT-SIDE NAVIGATION: Using Link for faster page transitions
  */
 
 /**
  * SidebarHeader Component
  *
  * Handles the top section of the sidebar with title and new chat button.
- * This component demonstrates single responsibility and reusability.
+ * Now uses React Router's Link component for client-side navigation.
+ *
+ * Key concepts:
+ * 1. LINK COMPONENT: Enables client-side routing without full page reload
+ * 2. FASTER NAVIGATION: No server roundtrip, instant UI updates
+ * 3. SPA BEHAVIOR: Maintains application state during navigation
  */
 function SidebarHeader() {
   return (
@@ -32,12 +38,15 @@ function SidebarHeader() {
 /**
  * ChatThreadItem Component
  *
- * Now uses CALLBACK FUNCTIONS for state updates! Key concepts:
+ * Now uses NAVLINK for ACTIVE and PENDING STATE STYLING! Key concepts:
  * 1. DESTRUCTURING: Extract thread data and callback function
  * 2. CALLBACK INVOCATION: Call parent function to trigger state updates
  * 3. EVENT HANDLING: Still handle click events but now trigger real actions
  * 4. STATE LIFTING: Component doesn't manage state, just triggers updates
  * 5. UNIDIRECTIONAL DATA FLOW: Data flows down, events flow up
+ * 6. NAVLINK COMPONENT: Automatically provides isActive and isPending states
+ * 7. ACTIVE STYLING: Highlights the currently displayed thread
+ * 8. PENDING STYLING: Shows pulsating animation while data is loading
  */
 function ChatThreadItem({ thread, onDeleteThread }) {
   const { id, title } = thread;
@@ -55,12 +64,20 @@ function ChatThreadItem({ thread, onDeleteThread }) {
   return (
     <li className="chat-thread-item">
       <div className="chat-thread-item-content">
-        <Link
+        <NavLink
           to={href("/chat/:threadId", { threadId: id })}
-          className="chat-thread-link"
+          className={({ isActive, isPending }) =>
+            [
+              "chat-thread-link",
+              isActive && "chat-thread-link-active",
+              isPending && "chat-thread-link-pending",
+            ]
+              .filter(Boolean)
+              .join(" ")
+          }
         >
           {title}
-        </Link>
+        </NavLink>
         <button
           className="delete-thread-btn"
           aria-label={`Delete thread: ${title}`}
@@ -137,7 +154,7 @@ function ChatThreadsList({ threads = [], onDeleteThread }) {
 function SidebarFooter() {
   return (
     <div className="sidebar-footer">
-      <Link to="/profile" className="user-profile">
+      <a href="/profile" className="user-profile">
         <img
           src="https://ui-avatars.com/api/?name=Batman&background=0D0D0D&color=fff&size=40"
           alt="User avatar"
@@ -146,7 +163,7 @@ function SidebarFooter() {
           height={30}
         />
         <span className="user-name">Batman</span>
-      </Link>
+      </a>
     </div>
   );
 }

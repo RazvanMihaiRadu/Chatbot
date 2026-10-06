@@ -10,6 +10,7 @@
   --bg-button-disabled: #d1d5db;
 
   --text-primary: #0d0d0d;
+  --text-muted: #9ca3af;
   --text-button: #ffffff;
 
   --border-light: #e5e5e5;
@@ -32,6 +33,7 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
 }
 
 /* Layout styles */
@@ -120,7 +122,7 @@ body {
 }
 
 .search-input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .chat-threads-list ul {
@@ -158,6 +160,26 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Active thread link styling */
+.chat-thread-link-active {
+  font-weight: bold;
+}
+
+/* Pending thread link styling - pulsating animation */
+.chat-thread-link-pending {
+  animation: pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    color: var(--text-primary);
+  }
+  50% {
+    color: var(--text-muted);
+  }
 }
 
 /* Delete button - hidden by default, shown on hover */
@@ -234,22 +256,11 @@ body {
   padding: 0;
 }
 
-.chat-page-title {
-  padding: 1.25rem 2rem;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-.thread-id-badge {
-  display: inline-block;
-  margin-left: 0.375rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  background: var(--bg-secondary);
-  color: var(--bg-button-primary);
-  font-size: 0.875rem;
-  font-variant-numeric: tabular-nums;
+.chat-thread-header {
+  text-align: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
 }
 
 .chat-messages {
